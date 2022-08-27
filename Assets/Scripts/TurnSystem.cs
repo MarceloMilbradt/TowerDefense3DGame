@@ -87,6 +87,15 @@ public class TurnSystem : Singleton<TurnSystem>
     {
         totalEnemyKilled++;
     }
+    private void Start()
+    {
+        EndNode.OnAnyUnitPass += EndNode_OnAnyUnitPass;
+    }
+
+    private void EndNode_OnAnyUnitPass(object sender, EventArgs e)
+    {
+        totalEnemyKilled++;
+    }
 
     private void Awake()
     {
