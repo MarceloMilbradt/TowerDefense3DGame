@@ -1,3 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 Assets/TextMesh*Pro/* linguist-vendored
+*.xsd linguist-vendored
