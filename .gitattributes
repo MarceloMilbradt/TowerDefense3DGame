@@ -5,6 +5,8 @@
 *.meta linguist-generated
 *.prefab linguist-generated
 *.unity linguist-generated
+*.cginc linguist-generated
+*.wlt linguist-generated
 
 # Macro for Unity YAML-based asset files.
 [attr]unityyaml -text merge=unityyamlmerge diff
