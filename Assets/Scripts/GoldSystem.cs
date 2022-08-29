@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class GoldSystem : Singleton<GoldSystem>
 {
-    public static event EventHandler<int> OnChange;
+    [SerializeField] private int startingGold;
+    public event EventHandler<int> OnChange;
 
     private int goldCount;
     public int GetGold()
@@ -31,6 +32,7 @@ public class GoldSystem : Singleton<GoldSystem>
     }
     private void Awake()
     {
+        goldCount = startingGold;
         CreateInstance(this);
     }
     private void Start()

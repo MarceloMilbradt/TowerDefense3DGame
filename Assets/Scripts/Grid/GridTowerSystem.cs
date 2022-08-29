@@ -2,10 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[Obsolete("Use TowerSystem")]
 public class GridTowerSystem : Singleton<GridTowerSystem>
 {
-    [SerializeField] private Transform towerPrefab;
     private void Awake()
     {
         CreateInstance(this);
@@ -20,9 +19,11 @@ public class GridTowerSystem : Singleton<GridTowerSystem>
             var gridPosition = gridSystem.GetGridPosition(MouseWorld.GetPosition());
 
             if (!GridValidator.ValidateGridPosition(gridPosition)) return;
+            Tower tower = ShopSystem.Instance.BuyTower();
 
-            var towerTransform = Instantiate(towerPrefab, gridSystem.GetWorldPosition(gridPosition), Quaternion.identity);
-            var tower = towerTransform.GetComponent<Tower>();
+            if (tower is null) return;
+
+            var towerTransform = Instantiate(tower.transform, gridSystem.GetWorldPosition(gridPosition), Quaternion.identity);
             gridSystem.AddAtGridPosition(gridPosition, tower);
 
         }

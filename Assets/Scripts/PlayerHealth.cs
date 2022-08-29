@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerHealth : Singleton<PlayerHealth>
 {
-    public static event EventHandler<float> OnChange;
+    public event EventHandler<float> OnChange;
 
     [SerializeField] private int damagePerUnit = 2;
     private HealthSystem healthSystem;

@@ -15,8 +15,8 @@ public class UIManager : Singleton<UIManager>
     // Start is called before the first frame update
     void Start()
     {
-        PlayerHealth.OnChange += PlayerHealth_OnChange;
-        GoldSystem.OnChange += GoldSystem_OnChange;
+        PlayerHealth.Instance.OnChange += PlayerHealth_OnChange;
+        GoldSystem.Instance.OnChange += GoldSystem_OnChange;
         TurnSystem.Instance.OnTurnChange += TurnSystem_OnTurnChange;
         UpdateGold();
         UpdateHealth();

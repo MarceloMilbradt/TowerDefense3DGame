@@ -11,7 +11,6 @@ public class TowerSystem : Singleton<TowerSystem>
     [SerializeField] private Tower selectedTower;
     [SerializeField] private LayerMask towerLayer;
     [SerializeField] private LayerMask gridLayer;
-    [SerializeField] private Transform towerPrefab;
 
     private void Awake()
     {
@@ -88,11 +87,13 @@ public class TowerSystem : Singleton<TowerSystem>
 
         if (!GridValidator.ValidateGridPosition(gridPosition)) return false;
 
+        Tower tower = ShopSystem.Instance.BuyTower();
+        if (tower is null) return false;
 
-        var towerTransform = Instantiate(towerPrefab, gridSystem.GetWorldPosition(gridPosition), Quaternion.identity);
-        var tower = towerTransform.GetComponent<Tower>();
-        gridSystem.EntityMovedGridPosition(tower, GridPosition.Empty, gridPosition);
-        SetSelectedTower(tower);
+        var towerTransform = Instantiate(tower.transform, gridSystem.GetWorldPosition(gridPosition), Quaternion.identity);
+        var towerComponent = towerTransform.GetComponent<Tower>();
+        gridSystem.EntityMovedGridPosition(towerComponent, GridPosition.Empty, gridPosition);
+        SetSelectedTower(towerComponent);
         return true;
     }
 }
