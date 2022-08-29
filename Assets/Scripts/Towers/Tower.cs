@@ -6,6 +6,9 @@ using UnityEngine;
 public class Tower : MonoBehaviour, IEntity
 {
     private TowerAttack attack;
+    [SerializeField] private int goldCost = 20;
+    [SerializeField] private Sprite icon;
+
     private void Awake()
     {
         attack = GetComponent<TowerAttack>();
@@ -25,5 +28,14 @@ public class Tower : MonoBehaviour, IEntity
     public Vector3 GetWorldPosition()
     {
         return transform.position;
+    }
+
+    public int GetGoldCost()
+    {
+        return goldCost;
+    }
+    public Sprite GetSprite()
+    {
+        return icon;
     }
 }

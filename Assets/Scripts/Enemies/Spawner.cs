@@ -5,8 +5,6 @@ using System.Linq;
 public class Spawner : Singleton<Spawner>
 {
     EffectController controller;
-    float canSpawnIn;
-    bool canSpawn;
     private void Awake()
     {
         CreateInstance(this);
@@ -15,8 +13,14 @@ public class Spawner : Singleton<Spawner>
     private void Start()
     {
         controller = GetComponent<EffectController>();
-        TurnSystem.Instance.OnTurnChange += TurnSystem_OnTurnChange;
+        TurnSystem.Instance.OnTurnBegin += TurnSystem_OnTurnBegin;
         TurnSystem.Instance.OnTurnEnd += TurnSystem_OnTurnEnd;
+        TurnSystem.Instance.OnTurnRun += TurnSystem_OnTurnRun;
+    }
+
+    private void TurnSystem_OnTurnRun(object sender, System.EventArgs e)
+    {
+        Spawn();
     }
 
     private void TurnSystem_OnTurnEnd(object sender, System.EventArgs e)
@@ -25,39 +29,28 @@ public class Spawner : Singleton<Spawner>
         EndNode.Instance.StopEffect();
     }
 
-    private void TurnSystem_OnTurnChange(object sender, int e)
+    private void TurnSystem_OnTurnBegin(object sender, System.EventArgs e)
     {
         controller.Fire();
         EndNode.Instance.StartEffect();
-        canSpawnIn = 1.5f;
-        canSpawn = true;
     }
 
     public void Spawn()
     {
-        canSpawn = false;
         StartCoroutine(SpawnUnits());
     }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            TurnSystem.Instance.NextTurn();
-        }
-        if (canSpawn)
-        {
-            canSpawnIn -= Time.deltaTime;
-        }
-        if (canSpawnIn <= 0 && canSpawn)
-        {
-            Spawn();
+            TurnSystem.Instance.StartGame();
         }
     }
     IEnumerator SpawnUnits()
     {
         var path = PathSystem.Instance.GetPath();
-        var enemies = TurnSystem.Instance.GetEnemiesToSpawn();
-        var totalCount = TurnSystem.Instance.GetEnemyCount();
+        var enemies = WaveSystem.Instance.GetEnemiesToSpawn();
+        var totalCount = WaveSystem.Instance.GetEnemyCount();
         int enemySpawned = 0;
 
         while (totalCount > enemySpawned)
@@ -69,7 +62,7 @@ public class Spawner : Singleton<Spawner>
             var instanceEnemy = enemyTransform.GetComponent<Enemy>();
             enemyMovement.Setup(path);
             enemySpawned++;
-            TurnSystem.Instance.AddEnemy(instanceEnemy);
+            WaveSystem.Instance.AddEnemy(instanceEnemy);
             yield return new WaitForSeconds(0.75f);
         }
     }
