@@ -46,7 +46,7 @@ public class TowerAttack : MonoBehaviour
                 ValidateTargets();
                 break;
             case State.Shooting:
-                foreach (var target in targets)
+                foreach (var target in targets.OrderByDescending( t => t.GetDistance()))
                 {
                     Shoot(target);
                 }
@@ -76,6 +76,7 @@ public class TowerAttack : MonoBehaviour
             target = target,
             origin = tower
         });
+
         target.Damage(stats.GetDamage());
     }
 

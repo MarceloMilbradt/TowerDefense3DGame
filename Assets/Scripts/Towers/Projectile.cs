@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
 {
     [SerializeField] private TrailRenderer trailRenderer;
     [SerializeField] private Transform bulletHitVfx;
+    [SerializeField] private float moveSpeed;
 
     private IEntity target;
     private Vector3 targetPosition;
@@ -28,11 +29,12 @@ public class Projectile : MonoBehaviour
         {
             SetTargetPosition(target.GetWorldPosition());
         }
+
         if (LevelGrid.Instance.GetGridPosition(targetPosition) == GridPosition.Zero) return;
         Vector3 moveDir = (targetPosition - transform.position).normalized;
         float distanceBeforeMoving = Vector3.Distance(transform.position, targetPosition);
-        float moveSpeed = 50f;
         transform.position += moveSpeed * Time.deltaTime * moveDir;
+        transform.LookAt(targetPosition);
         float distanceAfterMoving = Vector3.Distance(transform.position, targetPosition);
         if (distanceBeforeMoving < distanceAfterMoving)
         {

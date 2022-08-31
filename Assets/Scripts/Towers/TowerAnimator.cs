@@ -21,7 +21,14 @@ public class TowerAnimator : MonoBehaviour
         var bulletTransform = Instantiate(bulletPorjectile, shootPoint.position, Quaternion.identity);
         var bullet = bulletTransform.GetComponent<Projectile>();
         bullet.Setup(e.target);
-        ((Enemy) e.target).AddProjectile(bullet);
+        Enemy enemy = e.target as Enemy;
+        enemy.AddProjectile(bullet);
+
+        if (TryGetComponent(out TowerAim aim))
+        {
+            aim.SetTarget(enemy);
+        }
+
     }
 
 }

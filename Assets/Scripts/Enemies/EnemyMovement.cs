@@ -8,6 +8,8 @@ public class EnemyMovement : MonoBehaviour
     private List<Vector3> positionList;
     private bool active;
     private int currentPositionIndex;
+    private float maxDistance;
+    private float currentDistance;
     public void Stop()
     {
         active = false;
@@ -20,18 +22,26 @@ public class EnemyMovement : MonoBehaviour
         {
             positionList.Add(LevelGrid.Instance.GetWorldPosition(position));
         }
+        GetMaxDistance();
         active = true;
     }
-
+    public float GetDistanceNormalized()
+    {
+        return currentPositionIndex / positionList.Count;
+    }
     private void Update()
     {
         if (!active) return;
         float stoppingDistance = .1f;
         Vector3 targetPosition = positionList[currentPositionIndex];
-        bool isMoving = Vector3.Distance(transform.position, targetPosition) >= stoppingDistance;
+
+        var distance = Vector3.Distance(transform.position, targetPosition);
+        currentDistance = distance;
+        bool isMoving = distance >= stoppingDistance;
         Vector3 moveDirection = (targetPosition - transform.position).normalized;
         float rotateSpeed = 10f;
         transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * rotateSpeed);
+
         if (isMoving)
         {
             transform.position += speed * Time.deltaTime * moveDirection;
@@ -39,7 +49,13 @@ public class EnemyMovement : MonoBehaviour
         if (!isMoving)
         {
             currentPositionIndex++;
+            GetMaxDistance();
         }
     }
-
+    private void GetMaxDistance()
+    {
+        Vector3 targetPosition = positionList[currentPositionIndex];
+        var distance = Vector3.Distance(transform.position, targetPosition);
+        maxDistance = distance;
+    }
 }

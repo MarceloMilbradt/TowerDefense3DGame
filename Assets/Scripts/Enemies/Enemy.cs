@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour, IEntity
     public event EventHandler OnDeath;
     public static event EventHandler<Enemy> OnAnyDeath;
     HealthSystem healthSystem;
+    private EnemyMovement movement;
     GridPosition gridPosition;
     [SerializeField] private int goldReward = 2;
     private List<Projectile> projectilesFollowing;
@@ -16,6 +17,7 @@ public class Enemy : MonoBehaviour, IEntity
     {
         projectilesFollowing = new List<Projectile>();
         healthSystem = GetComponent<HealthSystem>();
+        movement = GetComponent<EnemyMovement>();
         healthSystem.OnDie += HealthSystem_OnDie;
         gridPosition = GridPosition.Empty;
     }
@@ -82,5 +84,10 @@ public class Enemy : MonoBehaviour, IEntity
     internal bool IsAlive()
     {
         return healthSystem.IsAlive();
+    }
+
+    public float GetDistance()
+    {
+        return movement.GetDistanceNormalized();
     }
 }
