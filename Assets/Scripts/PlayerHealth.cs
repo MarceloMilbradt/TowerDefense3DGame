@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerHealth : Singleton<PlayerHealth>
 {
     public event EventHandler<float> OnChange;
-
+    public event EventHandler OnDeath;
     [SerializeField] private int damagePerUnit = 2;
     private HealthSystem healthSystem;
     void Awake()
@@ -17,6 +17,10 @@ public class PlayerHealth : Singleton<PlayerHealth>
     private void Start()
     {
         EndNode.OnAnyUnitPass += EndNode_OnAnyUnitPass;
+        healthSystem.OnDie += (object sender, EventArgs e) =>
+        {
+            OnDeath?.Invoke(this, EventArgs.Empty);
+        };
     }
 
     private void EndNode_OnAnyUnitPass(object sender, System.EventArgs e)

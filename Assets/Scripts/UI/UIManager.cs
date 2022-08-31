@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+
 public class UIManager : Singleton<UIManager>
 {
     private void Awake()
@@ -12,16 +14,30 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI goldText;
     [SerializeField] private TextMeshProUGUI waveText;
     [SerializeField] private TextMeshProUGUI timerText;
-    // Start is called before the first frame update
+    [SerializeField] private Button startButton;
+    [SerializeField] private GameObject gameOverScreen;
     void Start()
     {
         PlayerHealth.Instance.OnChange += PlayerHealth_OnChange;
         GoldSystem.Instance.OnChange += GoldSystem_OnChange;
         TurnSystem.Instance.OnTurnChange += TurnSystem_OnTurnChange;
+        startButton.onClick.AddListener(() =>
+        {
+            TurnSystem.Instance.StartGame();
+            startButton.gameObject.SetActive(false);
+        });
+        PlayerHealth.Instance.OnDeath += PlayerHealth_OnDeath;
         UpdateGold();
         UpdateHealth();
         UpdateTurn();
     }
+
+    private void PlayerHealth_OnDeath(object sender, System.EventArgs e)
+    {
+        TurnSystem.Instance.StopGame();
+        gameOverScreen.SetActive(true);
+    }
+
     private void Update()
     {
         var countdown = TurnSystem.Instance.GetCountDown();

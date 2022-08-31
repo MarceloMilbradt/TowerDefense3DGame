@@ -126,4 +126,9 @@ public class TurnSystem : Singleton<TurnSystem>
         turnState = TurnState.Begining;
         NextState();
     }
+    public void StopGame()
+    {
+        hasStarted = false;
+        turnState = TurnState.Waiting;
+    }
 }

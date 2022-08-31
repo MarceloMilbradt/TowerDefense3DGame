@@ -39,13 +39,7 @@ public class Spawner : Singleton<Spawner>
     {
         StartCoroutine(SpawnUnits());
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            TurnSystem.Instance.StartGame();
-        }
-    }
+
     IEnumerator SpawnUnits()
     {
         var path = PathSystem.Instance.GetPath();

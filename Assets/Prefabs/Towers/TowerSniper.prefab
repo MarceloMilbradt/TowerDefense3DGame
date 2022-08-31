@@ -498,7 +498,7 @@ PrefabInstance:
     - target: {fileID: 2431363207830601207, guid: 452efe75fe271ed448d40b38fbaa28e0,
         type: 3}
       propertyPath: goldCost
-      value: 120
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2595626289995545278, guid: 452efe75fe271ed448d40b38fbaa28e0,
         type: 3}
@@ -513,7 +513,7 @@ PrefabInstance:
     - target: {fileID: 2836313860328947330, guid: 452efe75fe271ed448d40b38fbaa28e0,
         type: 3}
       propertyPath: damage
-      value: 80
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 2836313860328947330, guid: 452efe75fe271ed448d40b38fbaa28e0,
         type: 3}
